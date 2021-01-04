@@ -5,13 +5,27 @@ conn = sqlite3.connect("taxModel.db")
 c = conn.cursor()
 
 c.execute("""DROP TABLE IF EXISTS stateRate;""")
+c.execute("""DROP TABLE IF EXISTS user;""")
+
+c.execute(
+    """
+    CREATE TABLE user (
+        id INTEGER PRIMARY KEY,
+        username TEXT,
+        firstName TEXT,
+        lastName TEXT,
+        jurisdictionState TEXT,
+        yearlyIncome INTEGER 
+    );
+    """
+)
 
 c.execute(
     """
     CREATE TABLE stateRate (
         id INTEGER PRIMARY KEY,
         jurisdiction TEXT,
-        stateRate REAL 
+        stateAvgRate REAL 
     );
     """
 )
