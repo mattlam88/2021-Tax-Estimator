@@ -1,12 +1,18 @@
+from model.stateDAO import StateDAO, StateAvgRate
+
+
 class BidenTax:
-    def __init__(self, gross_income=0):
-        self.gross_income = gross_income
+    def __init__(self):
+        self.standard_deduction = 12400
 
-    def calc_tax(self):
-        standard_deduction = 12400
+    def calc_tax(self, user_finances):
+       self.calc_fed_tax(user_finances)
+       self.calc_state_tax(user_finances)
+       
+
+    def calc_fed_tax(self, user_finances):
+        fti = user_finances.gross_income - self.standard_deduction
         # FTI stands for federal taxable income
-        fti = self.gross_income - standard_deduction
-
         if fti > 0 & fti <= 9950:
             return fti * .1
         elif fti > 9950 & fti <= 40525:
@@ -22,14 +28,23 @@ class BidenTax:
         else:
             return (fti * .396) + 157804.25
 
-class TrumpTax:
-    def __init__(self, gross_income=0):
-        self.gross_income = gross_income
+    def calc_state_tax(self, user_finances):
+        state_rate = StateDAO.get_state_rate(user_finances.jurisdiction)
+        fti = user_finances.gross_income - self.standard_deduction
+        return fti * state_rate
 
-    def calc_tax(self):
-        standard_deduction = 12400
+
+class TrumpTax:
+    def __init__(self):
+        self.standard_deduction = 12400
+
+    def calc_tax(self, user_finances):
+        self.calc_fed_tax(user_finances)
+        self.calc_state_tax(user_finances)
+
+    def calc_fed_tax(self, user_finances):
         # FTI stands for federal taxable income
-        fti = self.gross_income - standard_deduction
+        fti = user_finances.gross_income - self.standard_deduction
 
         if fti > 0 & fti <= 9950:
             return fti * .1
@@ -45,3 +60,8 @@ class TrumpTax:
             return (fti * .35) + 47843
         else:
             return (fti * .37) + 157804.25
+
+    def calc_state_tax(self, user_finances):
+        state_rate = StateDAO.get_state_rate(user_finances.jurisdiction)
+        fti = user_finances.gross_income - self.standard_deduction
+        return fti * state_rate

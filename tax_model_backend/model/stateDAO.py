@@ -1,6 +1,6 @@
 import sqlite3
 
-class stateDAO:
+class StateDAO:
     def __init__(self):
         self.conn = sqlite3.connect("taxModel.db")
         self.cur = self.conn.cursor()
@@ -17,7 +17,7 @@ class stateDAO:
         self.conn.commit()
 
 
-class stateAvgRate:
+class StateAvgRate:
     def __init__(self, jurisdiction=None, state_rate=0):
         self.jurisdiction = jurisdiction
         self.state_rate = state_rate

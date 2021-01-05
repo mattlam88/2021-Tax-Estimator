@@ -15,7 +15,8 @@ c.execute(
         firstName TEXT,
         lastName TEXT,
         jurisdictionState TEXT,
-        yearlyIncome INTEGER 
+        yearlyIncome INTEGER,
+        taxDue INTEGER
     );
     """
 )
