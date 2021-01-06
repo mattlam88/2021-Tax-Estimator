@@ -1,6 +1,5 @@
 from model.stateDAO import StateDAO, StateAvgRate
 
-
 class BidenTax:
     def __init__(self):
         self.standard_deduction = 12400

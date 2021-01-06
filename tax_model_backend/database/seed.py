@@ -31,6 +31,19 @@ c.execute(
     """
 )
 
+c.execute(
+    """
+    CREATE TABLE userFinances (
+        id INTEGER PRIMARY KEY,
+        username TEXT,
+        annualIncome INTEGER,
+        jurisdiction TEXT,
+        federalTaxDue INTEGER,
+        stateTaxDue INTEGER
+    );
+    """
+)
+
 with open("tax_model_backend/database/2020-state-tax-rates.csv","r") as state_rates:
     reader_file = csv.reader(state_rates)
     for row in reader_file:
