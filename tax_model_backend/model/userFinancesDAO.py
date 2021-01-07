@@ -6,8 +6,13 @@ class UserFinancesDAO:
         self.cur = self.conn.cursor()
         # connection to DB
 
-    def add_user_finances(self, id, username, user_annual_income,user_jurisdiction,user_federal_tax_due,user_state_tax_due):
-        pass
+    def add_user_finances(self, data):
+        self.cur.execute(f"INSERT INTO userFinances (username, firstName, lastName, jurisdictionState, yearlyIncome, taxDue) VALUES (?,?,?,?,?,?);", data)
+        self.conn.commit()
+
+    def delete_user_fianances(self, username):
+        self.cur.execute(f"DELETE FROM userFinances WHERE username={username};")
+        self.conn.commit()
     
     def get_user_finances(self, username):
         user_finances = self.cur.execute(f"SELECT id, username, annualIncome, jurisdiction, federalTaxDue, stateTaxDue FROM userFinances WHERE username={username};")
@@ -19,8 +24,6 @@ class UserFinancesDAO:
     def update_user_fedstate_tax (self, username, fed_tax, state_tax):
         self.cur.execute(f"UPDATE userFinances SET federalTaxDue={fed_tax}, stateTaxDue={state_tax} WHERE username={username};")
         self.conn.commit()
-    # will add all the functions and methods here
-
 
 class UserFinances:
     def __init__ (self,id=0, username=None, user_annual_income=0,user_jurisdiction=None,user_federal_tax_due=0,user_state_tax_due=0):

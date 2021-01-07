@@ -1,14 +1,18 @@
 from model.stateDAO import StateDAO, StateAvgRate
+from model.userDAO import UserDAO, User
+from model.userFinancesDAO import UserFinancesDAO, UserFinancesDAO
 
 class BidenTax:
     def __init__(self):
         self.standard_deduction = 12400
 
     def calc_tax(self, user_finances):
-       self.calc_fed_tax(user_finances)
-       self.calc_state_tax(user_finances)
+       fed_tax = self.calc_fed_tax(user_finances)
+       state_tax = self.calc_state_tax(user_finances)
+       total_tax = fed_tax + state_tax
+       UserFinancesDAO.update_user_fedstate_tax(user_finances.username, fed_tax, state_tax)
+       UserDAO.update_user_tax_due(user_finances.username, total_tax)
        
-
     def calc_fed_tax(self, user_finances):
         fti = user_finances.gross_income - self.standard_deduction
         # FTI stands for federal taxable income
@@ -38,8 +42,11 @@ class TrumpTax:
         self.standard_deduction = 12400
 
     def calc_tax(self, user_finances):
-        self.calc_fed_tax(user_finances)
-        self.calc_state_tax(user_finances)
+        fed_tax = self.calc_fed_tax(user_finances)
+        state_tax = self.calc_state_tax(user_finances)
+        total_tax = fed_tax + state_tax
+        UserFinancesDAO.update_user_fedstate_tax(user_finances.username, fed_tax, state_tax)
+        UserDAO.update_user_tax_due(user_finances.username, total_tax)
 
     def calc_fed_tax(self, user_finances):
         # FTI stands for federal taxable income

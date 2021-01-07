@@ -8,7 +8,7 @@ class StateDAO:
     def get_state_rate(self, jurisdiction):
         rates = self.cur.execute(f"SELECT jurisdiction, stateAvgRate FROM stateRate WHERE jursisidction = {jurisdiction};")
         for rate in rates:
-            state_rate = stateAvgRate(rate[0], rate[1])
+            state_rate = StateAvgRate(rate[0], rate[1])
             return state_rate    
         self.conn.commit()
 
