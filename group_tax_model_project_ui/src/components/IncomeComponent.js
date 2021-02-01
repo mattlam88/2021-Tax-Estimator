@@ -64,7 +64,8 @@ function IncomeComponent() {
                     </Col>
                     <Col md={5}></Col>
                 </Row>
-                <Row>
+                <Row> 
+                    {/* Do we want to make each of these Graphs their own componenent? */}
                     <Col className="block-example border border-dark p-3 m-3">
                         Graph 1
                     </Col>
