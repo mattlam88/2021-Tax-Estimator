@@ -14,6 +14,10 @@ function IncomeComponent() {
         400000: '$400,000', 500000: '$500,000', 600000: '$600,000', 700000: '$700,000',
         800000: '$800,000', 900000: '$900,000', 1000000: '$1,000,000'}
     
+    const states = [
+        AL, AK, AZ, AR, CA, CO, CT, DE, DC, FL, GA, HI, ID, IL, IN, IA, KS, KY, LA, ME, MD, MA, MI, MN, MS, MO, MT, NE, NV, NH, 
+        NJ, NM, NY, NC, ND, OH, OK, OR, PA, RI, SC, SD, TN, TX, UT, VT, VA, WA, WV, WI, WY
+    ]
     function onChange(value) {
         setIncome(value);
     }
