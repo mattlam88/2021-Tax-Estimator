@@ -5,21 +5,6 @@ conn = sqlite3.connect("taxModel.db")
 c = conn.cursor()
 
 c.execute("""DROP TABLE IF EXISTS stateRate;""")
-c.execute("""DROP TABLE IF EXISTS user;""")
-
-c.execute(
-    """
-    CREATE TABLE user (
-        id INTEGER PRIMARY KEY,
-        username TEXT,
-        firstName TEXT,
-        lastName TEXT,
-        jurisdictionState TEXT,
-        yearlyIncome INTEGER,
-        taxDue INTEGER
-    );
-    """
-)
 
 c.execute(
     """
@@ -31,23 +16,10 @@ c.execute(
     """
 )
 
-c.execute(
-    """
-    CREATE TABLE userFinances (
-        id INTEGER PRIMARY KEY,
-        username TEXT,
-        annualIncome INTEGER,
-        jurisdiction TEXT,
-        federalTaxDue INTEGER,
-        stateTaxDue INTEGER
-    );
-    """
-)
-
 with open("tax_model_backend/database/2020-state-tax-rates.csv","r") as state_rates:
     reader_file = csv.reader(state_rates)
     for row in reader_file:
-        c.execute("""INSERT INTO stateRate ("jurisdiction", "stateRate") VALUES (?,?);""", row)
+        c.execute("""INSERT INTO stateRate ("jurisdiction", "stateAvgRate") VALUES (?,?);""", row)
 
 conn.commit()
 c.close()
