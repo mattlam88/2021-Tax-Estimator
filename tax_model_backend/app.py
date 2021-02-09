@@ -2,15 +2,14 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from controller.tax_logic import BidenTax, TrumpTax
 from model.stateDAO import StateDAO, StateAvgRate
-from model.userDAO import UserDAO, User
-from model.userDAO import UserFinancesDAO, UserFinances
+from model.fedDAO import FedDAO, FedTaxRate
 import jsons
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/federalTaxComparison', method=['POST', 'GET'])
-def federal_income_tax_comp(self):
+def federal_income_tax_comp():
     #Top Left Graph (Bar Graph)
     request_data = request.json()
     print(request_data)
@@ -33,30 +32,53 @@ def federal_income_tax_comp(self):
     return tax_due
 
 
-@app.route('federalTaxRateComparison', method=['GET', 'POST'])
-def get_federal_tax_rate_comparison(self):
-    # Will need to create a new table with the Trump rates vs Biden rates
-    # This should be two select statements into the database
+@app.route('federalTaxRateComparison', method=['GET'])
+def get_federal_tax_rate_comparison():
+    fed_tax_rates = FedDAO()
+    rates = jsons.dump(fed_tax_rates.get_fed_rates)  # returns the the entire table of rates
     # Top Right Graph (Line Graph)
-    pass
+    return rates
 
 
 @app.route('fedStateIncomeTaxComparison', method=['GET', 'POST'])
-def fed_state_income_tax_comp(self):
-    # Bottom Left Graph (Bar Graph)
-    state_avg_rate = StateDAO()
-    # Will get user information from the database and perform business logic
+def fed_state_income_tax_comp():
+    request_data = request.json()
+    print(request_data)
+    
+    income = request_data['income']
+    jurisdiction = request_data['stateTax']
+
+    biden_tax = BidenTax()
+    trump_tax = TrumpTax()
+
+    biden_tax_due = biden_tax.calc_fed_tax(income) + biden_tax.calc_state_tax(income, jurisdiction)
+    trump_tax_due = trump_tax.calc_fed_tax(income) + trump_tax.calc_state_tax(income, jurisdiction)
+
+    tax_due = {
+        "Biden": biden_tax_due,
+        "Trump": trump_tax_due
+    }
     # Graph will compare the income tax paid comparisons between Biden and Trump between the income brackets (Fed and State)
-    pass
+    # Bottom Left Graph (Bar Graph)
+    return tax_due
 
 
 @app.route('fedStateIncomeTaxRateComparison', method=['GET', 'POST'])
-def fed_state_income_tax_rate_comp(self):
-    # Bottom Right Graph (Bar Graph)
+def fed_state_income_tax_rate_comp():
+    request_data = request.json()
+    jurisdiction = request_data['stateTax']
+
     state_avg_rate = StateDAO()
-    # Will get user information from the database and perform business logic
+    fed_tax_rate = FedDAO()
+
+    combined_rates = {}
+    fed_rates = fed_tax_rate.get_fed_rates()
+    for key in fed_rates.keys():
+        combined_rates[key] = fed_rates[key].fed_tax_rate + state_avg_rate.get_state_rate(jurisdiction)
+
     # Graph will compare the rate comparisons between Biden and Trump between the income brackets (Fed and State AVG)
-    pass
+    # Bottom Right Graph (Bar Graph)
+    return combined_rates
 
 
 if __name__ == '__main__':

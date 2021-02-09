@@ -8,8 +8,10 @@ class FedDAO:
     def get_fed_rates(self):
         fed_tax_info = self.cur.execute(f"SELECT presidentBracket, fedTaxRate, incomeBracket FROM trumpBidenRates;")
         fed_tax_rates = {}
+
         for rate in fed_tax_info:
-            fed_tax_rates = FedTaxRate(rate[0], rate[1], rate[2])
+            president_bracket = rate[0]
+            fed_tax_rates[president_bracket] = FedTaxRate(rate[0], rate[1], rate[2])
         return fed_tax_rates 
 
 
