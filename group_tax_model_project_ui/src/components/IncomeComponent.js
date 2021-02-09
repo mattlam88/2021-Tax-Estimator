@@ -4,12 +4,13 @@ import Slider from 'react-rangeslider';
 import NumberFormat from 'react-number-format';
 import 'react-rangeslider/lib/index.css';
 import axios from 'axios'
+// Will need to import the four graph componenets.
 
 function IncomeComponent() {
 
     const [income, setIncome] = useState(0);
 
-    const [stateTax, setStateTax] = useState('');
+    const [stateTax, setStateTax] = useState('AK');
 
     const lab = {
         100000: '$100,000', 200000: '$200,000', 300000: '$300,000',
@@ -17,11 +18,15 @@ function IncomeComponent() {
         800000: '$800,000', 900000: '$900,000', 1000000: '$1,000,000'
     }
 
-    const states = [
-        AL, AK, AZ, AR, CA, CO, CT, DE, DC, FL, GA, HI, ID, IL, IN, IA, KS, KY, LA, ME, MD, MA, MI, MN, MS, MO, MT, NE, NV, NH,
-        NJ, NM, NY, NC, ND, OH, OK, OR, PA, RI, SC, SD, TN, TX, UT, VT, VA, WA, WV, WI, WY
-    ]
+    // const states = [
+    //     AL, AK, AZ, AR, CA, CO, CT, DE, DC, FL, GA, HI, ID, IL, IN, IA, KS, KY, LA, ME, MD, MA, MI, MN, MS, MO, MT, NE, NV, NH,
+    //     NJ, NM, NY, NC, ND, OH, OK, OR, PA, RI, SC, SD, TN, TX, UT, VT, VA, WA, WV, WI, WY
+    // ]
+
+    // the array above is causing an error, what will this be used for?
+
     function onChange(value) {
+        // add axios post call
         setIncome(value);
     }
 
@@ -30,6 +35,7 @@ function IncomeComponent() {
         setStateTax(inc_state.value);
         console.log(inc_state.value);
         console.log(stateTax);
+        // add axios post call
     }
     return (
         <React.Fragment>
@@ -112,7 +118,7 @@ function IncomeComponent() {
                                         <option>WV</option>
                                         <option>WI</option>
                                         <option>WY</option>
-                                        </Input>
+                                    </Input>
                                 </FormGroup>
                             </Form>
                         </div>
@@ -126,6 +132,15 @@ function IncomeComponent() {
                     </Col>
                     <Col className="block-example border border-dark p-3 m-3">
                         Graph 2
+                    </Col>
+                </Row>
+                <Row>
+                    {/* Do we want to make each of these Graphs their own componenent? */}
+                    <Col className="block-example border border-dark p-3 m-3">
+                        Graph 3
+                    </Col>
+                    <Col className="block-example border border-dark p-3 m-3">
+                        Graph 4
                     </Col>
                 </Row>
             </Container>
