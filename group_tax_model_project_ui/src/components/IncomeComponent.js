@@ -4,13 +4,17 @@ import Slider from 'react-rangeslider';
 import NumberFormat from 'react-number-format';
 import 'react-rangeslider/lib/index.css';
 import axios from 'axios'
+import FedTaxDueComp from './Graph_Components/FedTaxDueComp';
+import FedRateComp from './Graph_Components/FedRateComp';
+import FedAndStateTaxDue from './Graph_Components/FedAndStateTaxDue';
+import FedAndStateRateComp from './Graph_Components/FedAndStateRateComp.js'
 // Will need to import the four graph componenets.
 
 function IncomeComponent() {
 
     const [income, setIncome] = useState(0);
 
-    const [stateTax, setStateTax] = useState('AK');
+    const [stateTax, setStateTax] = useState('');
 
     const lab = {
         100000: '$100,000', 200000: '$200,000', 300000: '$300,000',
@@ -26,17 +30,24 @@ function IncomeComponent() {
     // the array above is causing an error, what will this be used for?
 
     function onChange(value) {
-        // add axios post call
         setIncome(value);
+
+        axios
+        .post(`/retrieveIncome/${income}/>`)
+        .then(result => {
+            console.log(result)
+          })
+        .catch(error => {
+            console.log(error)
+          });
     }
 
     function handleChange(e) {
-        let inc_state = e.target;
-        setStateTax(inc_state.value);
-        console.log(inc_state.value);
+        setStateTax(e.target.value);
         console.log(stateTax);
         // add axios post call
-    }
+    } 
+
     return (
         <React.Fragment>
             <Container>
@@ -126,21 +137,23 @@ function IncomeComponent() {
                     <Col md={5}></Col>
                 </Row>
                 <Row>
-                    {/* Do we want to make each of these Graphs their own componenent? */}
                     <Col className="block-example border border-dark p-3 m-3">
                         Graph 1
+                        <FedTaxDueComp userIncome={income} jursidiction={stateTax}/>
                     </Col>
                     <Col className="block-example border border-dark p-3 m-3">
                         Graph 2
+                        <FedRateComp />
                     </Col>
                 </Row>
                 <Row>
-                    {/* Do we want to make each of these Graphs their own componenent? */}
                     <Col className="block-example border border-dark p-3 m-3">
                         Graph 3
+                        <FedAndStateTaxDue userIncome={income} jursidiction={stateTax}/>
                     </Col>
                     <Col className="block-example border border-dark p-3 m-3">
                         Graph 4
+                        <FedAndStateRateComp jursidiction={stateTax}/>
                     </Col>
                 </Row>
             </Container>

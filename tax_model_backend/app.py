@@ -8,8 +8,24 @@ import jsons
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-@app.route('/federalTaxComparison', method=['POST', 'GET'])
-def federal_income_tax_comp():
+@app.route('/retrieveIncome/<income>', methods=['POST', 'GET'])
+def retrieve_income():
+    
+    return 'Success'
+
+@app.route('/retrieveJurisdiction/<jurisdiction>', methods=['POST', 'GET'])
+def retrieve_jurisdiction():
+    request_data = request.json()
+    print(request_data)
+    jurisdiction = request_data['stateTax']
+
+    data = {
+        'jurisdiction': jurisdiction
+    }
+    return data
+
+@app.route('/federalTaxComparison/<income>/<jurisdiction>', methods=['POST', 'GET'])
+def federal_income_tax_comp(income):
     #Top Left Graph (Bar Graph)
     request_data = request.json()
     print(request_data)
@@ -17,11 +33,9 @@ def federal_income_tax_comp():
     biden_tax_service = BidenTax()
     trump_tax_service = TrumpTax()
 
-    user_income = request_data['income']
-
     # User's federalincome tax output
-    user_biden_tax = biden_tax_service.calc_fed_tax(user_income)
-    user_trump_tax = trump_tax_service.calc_fed_tax(user_income)
+    user_biden_tax = biden_tax_service.calc_fed_tax(income)
+    user_trump_tax = trump_tax_service.calc_fed_tax(income) 
 
     # Will need to confirm if we are using $400k as the proxy or $1m
     tax_due = {
@@ -32,7 +46,7 @@ def federal_income_tax_comp():
     return tax_due
 
 
-@app.route('federalTaxRateComparison', method=['GET'])
+@app.route('/federalTaxRateComparison/', methods=['GET'])
 def get_federal_tax_rate_comparison():
     fed_tax_rates = FedDAO()
     rates = jsons.dump(fed_tax_rates.get_fed_rates)  # returns the the entire table of rates
@@ -40,13 +54,10 @@ def get_federal_tax_rate_comparison():
     return rates
 
 
-@app.route('fedStateIncomeTaxComparison', method=['GET', 'POST'])
-def fed_state_income_tax_comp():
+@app.route('/fedStateIncomeTaxComparison/<income>/<jurisdiction>', methods=['GET', 'POST'])
+def fed_state_income_tax_comp(income, jurisdiction):
     request_data = request.json()
     print(request_data)
-    
-    income = request_data['income']
-    jurisdiction = request_data['stateTax']
 
     biden_tax = BidenTax()
     trump_tax = TrumpTax()
@@ -63,7 +74,7 @@ def fed_state_income_tax_comp():
     return tax_due
 
 
-@app.route('fedStateIncomeTaxRateComparison', method=['GET', 'POST'])
+@app.route('/fedStateIncomeTaxRateComparison/<income>/<jurisdiction>', methods=['GET', 'POST'])
 def fed_state_income_tax_rate_comp():
     request_data = request.json()
     jurisdiction = request_data['stateTax']
