@@ -6,23 +6,20 @@ from model.fedDAO import FedDAO, FedTaxRate
 import jsons
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+# CORS(app, resources={r"/*": {"origins": "*"}})
 
-
-@app.route('/federalTaxComparison/<income>', methods=['POST', 'GET'])
-def federal_income_tax_comp(income):
+@app.route('/federalTaxComparison', methods=['GET'])
+def federal_income_tax_comp():
     #Top Left Graph (Bar Graph)
-    # request_data = request.get_json()
-    # print(request_data)
+    income = int(request.args.get('income'))
+    print(income)
     
-    # user_income = request_data['income']
-
     biden_tax_service = BidenTax()
     trump_tax_service = TrumpTax()
 
     # User's federalincome tax output
     user_biden_tax = biden_tax_service.calc_fed_tax(income)
-    user_trump_tax = trump_tax_service.calc_fed_tax(income) 
+    user_trump_tax = trump_tax_service.calc_fed_tax(income)
 
     # Will need to confirm if we are using $400k as the proxy or $1m
     tax_due = {
@@ -33,7 +30,7 @@ def federal_income_tax_comp(income):
     return tax_due
 
 
-@app.route('/federalTaxRateComparison/', methods=['GET'])
+@app.route('/federalTaxRateComparison', methods=['GET'])
 def get_federal_tax_rate_comparison():
     fed_tax_rates = FedDAO()
     rates = jsons.dump(fed_tax_rates.get_fed_rates)  # returns the the entire table of rates
@@ -41,10 +38,13 @@ def get_federal_tax_rate_comparison():
     return rates
 
 
-@app.route('/fedStateIncomeTaxComparison/<income>/<jurisdiction>', methods=['GET', 'POST'])
-def fed_state_income_tax_comp(income, jurisdiction):
+@app.route('/fedStateIncomeTaxComparison', methods=['GET', 'POST'])
+def fed_state_income_tax_comp():
     request_data = request.json()
     print(request_data)
+    
+    income = request_data['income']
+    jurisdiction = request_data['stateTax']
 
     biden_tax = BidenTax()
     trump_tax = TrumpTax()
@@ -61,8 +61,8 @@ def fed_state_income_tax_comp(income, jurisdiction):
     return tax_due
 
 
-@app.route('/fedStateIncomeTaxRateComparison/<income>/<jurisdiction>', methods=['GET', 'POST'])
-def fed_state_income_tax_rate_comp(income, jurisdiction):
+@app.route('/fedStateIncomeTaxRateComparison', methods=['GET', 'POST'])
+def fed_state_income_tax_rate_comp():
     request_data = request.json()
     jurisdiction = request_data['stateTax']
 
@@ -80,4 +80,4 @@ def fed_state_income_tax_rate_comp(income, jurisdiction):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(debug=True)

@@ -29,7 +29,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/mattlam/Documents/Coding Bootcamp/Group Project - Tax Model/tax_model_backend/venv"
+set -gx VIRTUAL_ENV "/Volumes/Samsung USB/Projects/2021-Tax-Model-Project/tax_model_backend/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
