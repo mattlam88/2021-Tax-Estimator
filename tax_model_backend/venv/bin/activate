@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/mattlam/Documents/Coding Bootcamp/Group Project - Tax Model/tax_model_backend/venv"
+VIRTUAL_ENV="/Volumes/Samsung USB/Projects/2021-Tax-Model-Project/tax_model_backend/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

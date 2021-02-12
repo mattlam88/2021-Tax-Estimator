@@ -1,11 +1,2 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-export default function FedAndStateRateComp() {
-    const [income, setIncome] = useState(0);
-
-    const [stateTax, setStateTax] = useState('AK');
-
-    return (
-        <h1>HI</h1>
-    )
-}
