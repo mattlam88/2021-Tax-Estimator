@@ -12,10 +12,6 @@ class StateDAO:
             return state_rate    
         self.conn.commit()
 
-    def update_state_rate(self,new_state_rate, jurisdiction):
-        self.cur.execute(f"UPDATE stateRate SET stateAvgRate={new_state_rate} WHERE jurisdiction={jurisdiction};")
-        self.conn.commit()
-
 
 class StateAvgRate:
     def __init__(self, jurisdiction=None, state_rate=0):

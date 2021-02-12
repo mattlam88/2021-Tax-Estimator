@@ -8,28 +8,15 @@ import jsons
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-@app.route('/retrieveIncome/<income>', methods=['POST', 'GET'])
-def retrieve_income():
-    
-    return 'Success'
 
-@app.route('/retrieveJurisdiction/<jurisdiction>', methods=['POST', 'GET'])
-def retrieve_jurisdiction():
-    request_data = request.json()
-    print(request_data)
-    jurisdiction = request_data['stateTax']
-
-    data = {
-        'jurisdiction': jurisdiction
-    }
-    return data
-
-@app.route('/federalTaxComparison/<income>/<jurisdiction>', methods=['POST', 'GET'])
+@app.route('/federalTaxComparison/<income>', methods=['POST', 'GET'])
 def federal_income_tax_comp(income):
     #Top Left Graph (Bar Graph)
-    request_data = request.json()
-    print(request_data)
+    # request_data = request.get_json()
+    # print(request_data)
     
+    # user_income = request_data['income']
+
     biden_tax_service = BidenTax()
     trump_tax_service = TrumpTax()
 
@@ -75,7 +62,7 @@ def fed_state_income_tax_comp(income, jurisdiction):
 
 
 @app.route('/fedStateIncomeTaxRateComparison/<income>/<jurisdiction>', methods=['GET', 'POST'])
-def fed_state_income_tax_rate_comp():
+def fed_state_income_tax_rate_comp(income, jurisdiction):
     request_data = request.json()
     jurisdiction = request_data['stateTax']
 

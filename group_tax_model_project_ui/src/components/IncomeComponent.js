@@ -29,11 +29,12 @@ function IncomeComponent() {
 
     // the array above is causing an error, what will this be used for?
 
-    function onChange(value) {
+    function onChangeIncome(value) {
         setIncome(value);
 
         axios
-        .post(`/retrieveIncome/${income}/>`)
+        .post(`/federalTaxComparison/${income}>`, income)
+        .then(console.log(income))
         .then(result => {
             console.log(result)
           })
@@ -65,7 +66,7 @@ function IncomeComponent() {
                             orientation={"horizontal"}
                             tooltip={false}
                             labels={lab}
-                            onChange={onChange}
+                            onChange={onChangeIncome}
                         />
                     </Col>
                 </Row>
