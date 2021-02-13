@@ -48,7 +48,9 @@ function IncomeComponent() {
                 income: income
             }
           })
-          .then(handleResponse)
+          .then(handleResponse);
+
+        console.log(bidenTaxesDue, trumpTaxesDue)
       }
 
     return (
