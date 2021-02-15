@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, FormGroup, Input } from 'reactstrap';
 import Slider from 'react-rangeslider';
 import NumberFormat from 'react-number-format';
-import axios from 'axios';
 import 'react-rangeslider/lib/index.css';
 import FedCompareBarGraphComponent from './FedCompareBarGraphComponent';
 import FedStateCompareBarGraphComponent from './FedStateCompareBarGraphComponent';
@@ -13,10 +12,6 @@ function IncomeComponent() {
     const [income, setIncome] = useState(0);
 
     const [stateName, setStateName] = useState('');
-
-    const [bidenFedTaxesDue, setBidenFedTaxesDue] = useState(0);
-
-    const [trumpFedTaxesDue, setTrumpFedTaxesDue] = useState(0);
 
     const [bidenFedStateTaxesDue, setBidenFedStateTaxesDue] = useState(0);
 
@@ -38,21 +33,10 @@ function IncomeComponent() {
         setIncome(value);
     }
 
-    function handleFedResponse(response) {
-        setBidenFedTaxesDue(response.data.user_biden_tax);
-        setTrumpFedTaxesDue(response.data.user_trump_tax);
-    }
-
     function handleChange(e) {
         e.preventDefault();
         let inc_state = e.target.value;
         setStateName(inc_state);
-        axios.get('/federalTaxComparison', {
-            params: {
-                income: income
-            }
-          })
-          .then(handleFedResponse)
       }
 
     return (
@@ -97,7 +81,7 @@ function IncomeComponent() {
                 </Row>
                 <Row>
                     <Col className="block-example border border-dark p-3 m-3">
-                        <FedCompareBarGraphComponent name='Federal Tax Comparison' biden={bidenFedTaxesDue} trump={trumpFedTaxesDue}/>
+                        <FedCompareBarGraphComponent name='Federal Tax Comparison' income={income} stateName={stateName}/>
                     </Col>
                     <Col className="block-example border border-dark p-3 m-3">
                     <LineGraphComponent name='Graph 2'/>

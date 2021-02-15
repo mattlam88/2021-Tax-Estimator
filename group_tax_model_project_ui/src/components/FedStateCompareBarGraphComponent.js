@@ -1,10 +1,12 @@
 import React from 'react';
-import {CanvasJSChart} from 'canvasjs-react-charts'
+// import {CanvasJSChart} from 'canvasjs-react-charts'
 
 function FedCompareBarGraphComponent(props) {
 
     const biden = props.biden;
     const trump = props.trump;
+
+    
 
     const options = {
         animationEnabled: true,
@@ -29,7 +31,9 @@ function FedCompareBarGraphComponent(props) {
     }
 
     return (
-        <CanvasJSChart options = {options}/>
+       <React.Fragment>
+           
+       </React.Fragment>
     )
 }
 

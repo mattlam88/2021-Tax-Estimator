@@ -8,7 +8,6 @@
     "@testing-library/user-event": "^12.6.0",
     "bootstrap": "^4.5.3",
     "bootstrap-slider": "^11.0.2",
-    "canvasjs-react-charts": "^1.0.5",
     "highcharts": "^8.2.2",
     "highcharts-react-official": "^3.0.0",
     "react": "^17.0.1",

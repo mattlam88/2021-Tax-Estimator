@@ -1,35 +1,54 @@
-import React from 'react';
-import {CanvasJSChart} from 'canvasjs-react-charts'
+import React, { useState, useEffect } from 'react';
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import axios from 'axios';
 
 function FedCompareBarGraphComponent(props) {
 
-    const biden = props.biden;
-    const trump = props.trump;
-
     const options = {
-        animationEnabled: true,
-        theme: "light2",
-        title:{
-            text: "Federal Tax Due"
+        chart: {
+          type: 'column'
         },
-        axisX: {
-            title: "Biden v. Trump"
+        title: {
+            text: 'Federal Tax Liability'
         },
-        axisY: {
-            title: "Fed. Tax Due",
-            includeZero: true
+        subtitle: {
+            text: 'Biden v. Trump'
         },
-        data: [{
-            type: "column",
-            dataPoints: [
-                { y:  biden, label: "Biden", color: "blue" },
-                { y:  trump, label: "Trump", color: "red" }
-            ]
+        xAxis: {
+            type: 'category',
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Tax Liability (US$)'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        colors: [
+            'blue', 
+            'red'
+            ],
+            
+        plotOptions: {
+            column: {
+                colorByPoint: true
+            }
+        },
+        series: [{
+            data: [
+                ['Biden', 12000],
+                ['Trump', 12000]
+            ],
         }]
-    }
+    };
 
     return (
-        <CanvasJSChart options = {options}/>
+        <React.Fragment>
+            <HighchartsReact highcharts={Highcharts} options={options} />
+        </React.Fragment>
     )
 }
 
