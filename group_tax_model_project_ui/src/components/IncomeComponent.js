@@ -4,19 +4,23 @@ import Slider from 'react-rangeslider';
 import NumberFormat from 'react-number-format';
 import axios from 'axios';
 import 'react-rangeslider/lib/index.css';
-import BarGraphComponent from './BarGraphComponent';
 import FedCompareBarGraphComponent from './FedCompareBarGraphComponent';
+import FedStateCompareBarGraphComponent from './FedStateCompareBarGraphComponent';
 import LineGraphComponent from './LineGraphComponent';
 
 function IncomeComponent() {
 
     const [income, setIncome] = useState(0);
 
-    const [stateTax, setStateTax] = useState('');
+    const [stateName, setStateName] = useState('');
 
-    const [bidenTaxesDue, setBidenTaxesDue] = useState();
+    const [bidenFedTaxesDue, setBidenFedTaxesDue] = useState(0);
 
-    const [trumpTaxesDue, setTrumpTaxesDue] = useState();
+    const [trumpFedTaxesDue, setTrumpFedTaxesDue] = useState(0);
+
+    const [bidenFedStateTaxesDue, setBidenFedStateTaxesDue] = useState(0);
+
+    const [trumpFedStateTaxesDue, setTrumpFedStateTaxesDue] = useState(0);
 
     const lab = {
         100000: '$100,000', 200000: '$200,000', 300000: '$300,000',
@@ -34,23 +38,21 @@ function IncomeComponent() {
         setIncome(value);
     }
 
-    function handleResponse(response) {
-        setBidenTaxesDue(response.data.user_biden_tax);
-        setTrumpTaxesDue(response.data.user_trump_tax);
+    function handleFedResponse(response) {
+        setBidenFedTaxesDue(response.data.user_biden_tax);
+        setTrumpFedTaxesDue(response.data.user_trump_tax);
     }
 
     function handleChange(e) {
         e.preventDefault();
         let inc_state = e.target.value;
-        setStateTax(inc_state);
+        setStateName(inc_state);
         axios.get('/federalTaxComparison', {
             params: {
                 income: income
             }
           })
-          .then(handleResponse);
-
-        console.log(bidenTaxesDue, trumpTaxesDue)
+          .then(handleFedResponse)
       }
 
     return (
@@ -80,7 +82,7 @@ function IncomeComponent() {
                     <Col md={2}>
                         <div style={{ textAlign: 'center' }}>
                             State of Residence:&nbsp;&nbsp;
-                            <Form onChange={handleChange} value={stateTax}>
+                            <Form onChange={handleChange} value={stateName}>
                             <FormGroup>
                                 <Input type="select" name="select">
                                     {states.map(state => 
@@ -94,9 +96,8 @@ function IncomeComponent() {
                     <Col md={5}></Col>
                 </Row>
                 <Row>
-                    {/* Do we want to make each of these Graphs their own componenent? */}
                     <Col className="block-example border border-dark p-3 m-3">
-                        <FedCompareBarGraphComponent name='Federal Tax Comparison' biden={bidenTaxesDue} trump={trumpTaxesDue}/>
+                        <FedCompareBarGraphComponent name='Federal Tax Comparison' biden={bidenFedTaxesDue} trump={trumpFedTaxesDue}/>
                     </Col>
                     <Col className="block-example border border-dark p-3 m-3">
                     <LineGraphComponent name='Graph 2'/>
@@ -104,7 +105,7 @@ function IncomeComponent() {
                 </Row>
                 <Row> 
                     <Col className="block-example border border-dark p-3 m-3">
-                        <BarGraphComponent name='Graph 3'/>
+                        <FedStateCompareBarGraphComponent name='Fed/State Tax Comparison' biden={bidenFedStateTaxesDue} trump={trumpFedStateTaxesDue}/>
                     </Col>
                     <Col className="block-example border border-dark p-3 m-3">
                         <LineGraphComponent name='Graph 4'/>

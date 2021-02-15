@@ -2,7 +2,7 @@ import sqlite3
 
 class StateDAO:
     def __init__(self):
-        self.conn = sqlite3.connect("/Users/mattlam/Documents/Coding Bootcamp/Group Project - Tax Model/taxModel.db")
+        self.conn = sqlite3.connect("/Volumes/Samsung USB/Projects/2021-Tax-Model-Project/taxModel.db")
         self.cur = self.conn.cursor()
 
     def get_state_rate(self, jurisdiction):
