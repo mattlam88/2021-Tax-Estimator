@@ -1,40 +1,78 @@
-import React from 'react';
-// import {CanvasJSChart} from 'canvasjs-react-charts'
+import React, { useState, useEffect } from 'react';
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import axios from 'axios';
 
-function FedCompareBarGraphComponent(props) {
+function FedStateCompareBarGraphComponent(props) {
 
-    const biden = props.biden;
-    const trump = props.trump;
+    const income = props.income;
+    var stateName = props.stateName;
 
-    
+    const [bidenFedStateTaxes, setBidenFedStateTaxes] = useState(0);
 
-    const options = {
-        animationEnabled: true,
-        theme: "light2",
-        title:{
-            text: "Federal Tax Due"
-        },
-        axisX: {
-            title: "Biden v. Trump"
-        },
-        axisY: {
-            title: "Fed. Tax Due",
-            includeZero: true
-        },
-        data: [{
-            type: "column",
-            dataPoints: [
-                { y:  biden, label: "Biden", color: "blue" },
-                { y:  trump, label: "Trump", color: "red" }
-            ]
-        }]
+    const [trumpFedStateTaxes, setTrumpFedStateTaxes] = useState(0);
+
+    function handleResponse(response) {
+        console.log(response);
+        setBidenFedStateTaxes(response.data.Biden);
+        setTrumpFedStateTaxes(response.data.Trump);
     }
 
+    useEffect(() => {
+        axios.get('/fedStateIncomeTaxComparison', {
+            params: {
+                income: income,
+                stateTax: stateName
+            }
+        })
+        .then(handleResponse);
+    }, [income, stateName]);
+
+    const options = {
+        chart: {
+          type: 'column'
+        },
+        title: {
+            text: 'Federal and State Tax Liability'
+        },
+        subtitle: {
+            text: 'Biden v. Trump'
+        },
+        xAxis: {
+            type: 'category',
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Tax Liability (US$)'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        colors: [
+            'blue', 
+            'red'
+            ],
+            
+        plotOptions: {
+            column: {
+                colorByPoint: true
+            }
+        },
+        series: [{
+            data: [
+                ['Biden', bidenFedStateTaxes],
+                ['Trump', trumpFedStateTaxes]
+            ],
+        }]
+    };
+
     return (
-       <React.Fragment>
-           
-       </React.Fragment>
+        <React.Fragment>
+            <HighchartsReact highcharts={Highcharts} options={options} />
+        </React.Fragment>
     )
 }
 
-export default FedCompareBarGraphComponent;
+export default FedStateCompareBarGraphComponent;

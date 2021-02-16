@@ -41,21 +41,23 @@ def get_federal_tax_rate_comparison():
     return rates
 
 
-@app.route('/fedStateIncomeTaxComparison', methods=['GET', 'POST'])
+@app.route('/fedStateIncomeTaxComparison', methods=['GET'])
 def fed_state_income_tax_comp():
-    request_data = request.json()
-    print(request_data)
+    income = int(request.args.get('income'))
+    jurisdiction = request.args.get('stateTax')
+    # request_data = request.json()
+    # print(request_data)
 
-    income = request_data['income']
-    jurisdiction = request_data['stateTax']
+    # income = request_data['income']
+    # jurisdiction = request_data['stateTax']
 
     biden_tax = BidenTax()
     trump_tax = TrumpTax()
 
-    biden_tax_due = biden_tax.calc_fed_tax(
-        income) + biden_tax.calc_state_tax(income, jurisdiction)
-    trump_tax_due = trump_tax.calc_fed_tax(
-        income) + trump_tax.calc_state_tax(income, jurisdiction)
+    biden_tax_due = biden_tax.calc_fed_tax_biden(
+        income) + biden_tax.calc_state_tax_biden(income, jurisdiction)
+    trump_tax_due = trump_tax.calc_fed_tax_trump(
+        income) + trump_tax.calc_state_tax_trump(income, jurisdiction)
 
     tax_due = {
         "Biden": biden_tax_due,

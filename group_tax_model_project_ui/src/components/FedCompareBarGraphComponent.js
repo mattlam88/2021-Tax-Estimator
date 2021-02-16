@@ -1,9 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import axios from 'axios';
 
 function FedCompareBarGraphComponent(props) {
+
+    const income = props.income;
+
+    const [bidenFedTaxes, setBidenFedTaxes] = useState(0);
+
+    const [trumpFedTaxes, setTrumpFedTaxes] = useState(0);
+
+    function handleResponse(response) {
+        console.log(response);
+        setBidenFedTaxes(response.data.user_biden_tax);
+        setTrumpFedTaxes(response.data.user_trump_tax);
+    }
+
+    useEffect(() => {
+        axios.get('/federalTaxComparison', {
+            params: {
+                income: income
+            }
+        })
+        .then(handleResponse);
+    }, [income]);
 
     const options = {
         chart: {
@@ -39,8 +60,8 @@ function FedCompareBarGraphComponent(props) {
         },
         series: [{
             data: [
-                ['Biden', 12000],
-                ['Trump', 12000]
+                ['Biden', bidenFedTaxes],
+                ['Trump', trumpFedTaxes]
             ],
         }]
     };

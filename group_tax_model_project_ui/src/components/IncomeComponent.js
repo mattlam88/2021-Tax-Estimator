@@ -5,17 +5,13 @@ import NumberFormat from 'react-number-format';
 import 'react-rangeslider/lib/index.css';
 import FedCompareBarGraphComponent from './FedCompareBarGraphComponent';
 import FedStateCompareBarGraphComponent from './FedStateCompareBarGraphComponent';
-import LineGraphComponent from './LineGraphComponent';
+import FedTaxRateComparisonComponent from './FedTaxRateComparisonComponent';
 
 function IncomeComponent() {
 
-    const [income, setIncome] = useState(0);
+    const [income, setIncome] = useState(1);
 
-    const [stateName, setStateName] = useState('');
-
-    const [bidenFedStateTaxesDue, setBidenFedStateTaxesDue] = useState(0);
-
-    const [trumpFedStateTaxesDue, setTrumpFedStateTaxesDue] = useState(0);
+    const [stateName, setStateName] = useState('AL');
 
     const lab = {
         100000: '$100,000', 200000: '$200,000', 300000: '$300,000',
@@ -33,11 +29,17 @@ function IncomeComponent() {
         setIncome(value);
     }
 
+    // function handleResponse2(response) {
+    //     console.log(response);
+    //     setBidenFedTaxes(response.data.user_biden_tax);
+    //     setTrumpFedTaxes(response.data.user_trump_tax);
+    // }
+
     function handleChange(e) {
         e.preventDefault();
         let inc_state = e.target.value;
         setStateName(inc_state);
-      }
+    }
 
     return (
         <React.Fragment>
@@ -81,18 +83,18 @@ function IncomeComponent() {
                 </Row>
                 <Row>
                     <Col className="block-example border border-dark p-3 m-3">
-                        <FedCompareBarGraphComponent name='Federal Tax Comparison' income={income} stateName={stateName}/>
+                        <FedCompareBarGraphComponent income={income}/>
                     </Col>
                     <Col className="block-example border border-dark p-3 m-3">
-                    <LineGraphComponent name='Graph 2'/>
+                        <FedTaxRateComparisonComponent/>
                     </Col>
                 </Row>
                 <Row> 
                     <Col className="block-example border border-dark p-3 m-3">
-                        <FedStateCompareBarGraphComponent name='Fed/State Tax Comparison' biden={bidenFedStateTaxesDue} trump={trumpFedStateTaxesDue}/>
+                        <FedStateCompareBarGraphComponent income={income} stateName={stateName}/>
                     </Col>
                     <Col className="block-example border border-dark p-3 m-3">
-                        <LineGraphComponent name='Graph 4'/>
+                        Graph 4
                     </Col>
                 </Row>
             </Container>
