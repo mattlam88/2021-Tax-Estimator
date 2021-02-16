@@ -1,37 +1,39 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import axios from 'axios';
 
-function FedCompareBarGraphComponent(props) {
+function FedStateCompareBarGraphComponent(props) {
 
     const income = props.income;
+    var stateName = props.stateName;
 
-    const [bidenFedTaxes, setBidenFedTaxes] = useState(0);
+    const [bidenFedStateTaxes, setBidenFedStateTaxes] = useState(0);
 
-    const [trumpFedTaxes, setTrumpFedTaxes] = useState(0);
+    const [trumpFedStateTaxes, setTrumpFedStateTaxes] = useState(0);
 
     function handleResponse(response) {
         console.log(response);
-        setBidenFedTaxes(response.data.user_biden_tax);
-        setTrumpFedTaxes(response.data.user_trump_tax);
+        setBidenFedStateTaxes(response.data.Biden);
+        setTrumpFedStateTaxes(response.data.Trump);
     }
 
     useEffect(() => {
-        axios.get('/federalTaxComparison', {
+        axios.get('/fedStateIncomeTaxComparison', {
             params: {
-                income: income
+                income: income,
+                stateTax: stateName
             }
         })
         .then(handleResponse);
-    }, [income]);
+    }, [income, stateName]);
 
     const options = {
         chart: {
           type: 'column'
         },
         title: {
-            text: 'Federal Tax Liability'
+            text: 'Federal and State Tax Liability'
         },
         subtitle: {
             text: 'Biden v. Trump'
@@ -60,8 +62,8 @@ function FedCompareBarGraphComponent(props) {
         },
         series: [{
             data: [
-                ['Biden', bidenFedTaxes],
-                ['Trump', trumpFedTaxes]
+                ['Biden', bidenFedStateTaxes],
+                ['Trump', trumpFedStateTaxes]
             ],
         }]
     };
@@ -73,4 +75,4 @@ function FedCompareBarGraphComponent(props) {
     )
 }
 
-export default FedCompareBarGraphComponent;
+export default FedStateCompareBarGraphComponent;
