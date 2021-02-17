@@ -28,7 +28,8 @@ class BidenTax:
     def calc_state_tax_biden(self, user_income, user_state):
         state_rate = self.state_DAO.get_state_rate(user_state)
         fti = user_income - self.standard_deduction
-        return fti * state_rate.state_rate
+        return fti * state_rate
+
 
 
 class TrumpTax:
@@ -60,4 +61,4 @@ class TrumpTax:
     def calc_state_tax_trump(self, user_income, user_state):
         state_rate = self.state_DAO.get_state_rate(user_state)
         fti = user_income - self.standard_deduction
-        return fti * state_rate.state_rate
+        return fti * state_rate
