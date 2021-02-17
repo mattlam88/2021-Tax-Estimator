@@ -36,7 +36,7 @@ def federal_income_tax_comp():
 def get_federal_tax_rate_comparison():
     fed_tax_rates = FedDAO()
     # returns the the entire table of rates
-    rates = jsons.dump(fed_tax_rates.get_fed_rates)
+    rates = jsons.dump(fed_tax_rates.get_fed_rates())
     # Top Right Graph (Line Graph)
     return rates
 
@@ -70,9 +70,9 @@ def fed_state_income_tax_comp():
 
 @app.route('/fedStateIncomeTaxRateComparison', methods=['GET', 'POST'])
 def fed_state_income_tax_rate_comp():
-    request_data = request.json()
-    jurisdiction = request_data['stateTax']
-
+    # request_data = request.json()
+    # jurisdiction = request_data['stateTax']
+    jurisdiction = request.args.get('stateTax')
     state_avg_rate = StateDAO()
     fed_tax_rate = FedDAO()
 

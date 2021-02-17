@@ -6,6 +6,7 @@ import 'react-rangeslider/lib/index.css';
 import FedCompareBarGraphComponent from './FedCompareBarGraphComponent';
 import FedStateCompareBarGraphComponent from './FedStateCompareBarGraphComponent';
 import FedTaxRateComparisonComponent from './FedTaxRateComparisonComponent';
+import FedStateAvgCompareBarGraphComponent from './FedStateAvgCompareBarGraphComponent';
 
 function IncomeComponent() {
 
@@ -86,7 +87,7 @@ function IncomeComponent() {
                         <FedCompareBarGraphComponent income={income}/>
                     </Col>
                     <Col className="block-example border border-dark p-3 m-3">
-                        <FedTaxRateComparisonComponent/>
+                        <FedTaxRateComparisonComponent income={income}/>
                     </Col>
                 </Row>
                 <Row> 
@@ -94,7 +95,7 @@ function IncomeComponent() {
                         <FedStateCompareBarGraphComponent income={income} stateName={stateName}/>
                     </Col>
                     <Col className="block-example border border-dark p-3 m-3">
-                        Graph 4
+                        <FedStateAvgCompareBarGraphComponent stateName={stateName} />
                     </Col>
                 </Row>
             </Container>
