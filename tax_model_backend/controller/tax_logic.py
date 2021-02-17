@@ -9,7 +9,7 @@ class BidenTax:
         fti = user_income - self.standard_deduction
         # FTI stands for federal taxable income
         if fti <= 0:
-            return 1
+            return 0
         if fti >= 0 and fti <= 9950:
             return fti * .1
         elif fti > 9950 and fti <= 40525:
@@ -28,8 +28,10 @@ class BidenTax:
     def calc_state_tax_biden(self, user_income, user_state):
         state_rate = self.state_DAO.get_state_rate(user_state)
         fti = user_income - self.standard_deduction
-        return fti * state_rate
-
+        if fti <= 0:
+            return 0
+        else:
+            return fti * state_rate.state_rate
 
 
 class TrumpTax:
@@ -42,7 +44,7 @@ class TrumpTax:
         fti = user_income - self.standard_deduction
 
         if fti <= 0:
-            return 1
+            return 0
         if fti >= 0 and fti <= 9950:
             return fti * .1
         elif fti > 9950 and fti <= 40525:
@@ -61,4 +63,7 @@ class TrumpTax:
     def calc_state_tax_trump(self, user_income, user_state):
         state_rate = self.state_DAO.get_state_rate(user_state)
         fti = user_income - self.standard_deduction
-        return fti * state_rate
+        if fti <= 0:
+            return 0
+        else:
+            return fti * state_rate.state_rate
