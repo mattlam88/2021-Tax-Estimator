@@ -31,7 +31,7 @@ class BidenTax:
         if fti <= 0:
             return 0
         else:
-            return fti * state_rate.state_rate
+            return fti * state_rate
 
 
 class TrumpTax:
@@ -66,4 +66,4 @@ class TrumpTax:
         if fti <= 0:
             return 0
         else:
-            return fti * state_rate.state_rate
+            return fti * state_rate
