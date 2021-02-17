@@ -5,7 +5,22 @@ import axios from 'axios';
 
 function FedTaxRateComparisonComponent() {
 
-    const [data, setData] = useState({'Biden_1.fed_tax_rate': 0, 'Trump_1.fed_tax_rate': 0})
+    const [data, setData] = useState({
+        Biden_1: 1,
+        Biden_2: 1,
+        Biden_3: 1,
+        Biden_4: 1,
+        Biden_5: 1,
+        Biden_6: 1,
+        Biden_7: 1,
+        Trump_1: 1,
+        Trump_2: 1,
+        Trump_3: 1,
+        Trump_4: 1,
+        Trump_5: 1,
+        Trump_6: 1,
+        Trump_7: 1
+    })
 
     function handleResponse(response) {
         console.log(response);
