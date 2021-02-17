@@ -30,12 +30,6 @@ function IncomeComponent() {
         setIncome(value);
     }
 
-    // function handleResponse2(response) {
-    //     console.log(response);
-    //     setBidenFedTaxes(response.data.user_biden_tax);
-    //     setTrumpFedTaxes(response.data.user_trump_tax);
-    // }
-
     function handleChange(e) {
         e.preventDefault();
         let inc_state = e.target.value;
